@@ -5,13 +5,12 @@ function [imagNew] = medianFilter(imag, x, y)
     % the kernel.
     % Kernel dimensions must be odd numbers.
     try
-        if mod(x, 2) == 0 || mod(y, 2) == 0
+        if mod(x, 2) == 0 || od(y, 2) == 0
             error('Kernel dimensions must be odd numbers.')
         end
-
     catch ME
-        rethrow(ME);
-    end
+        rethrow(ME)
+        
 
     imagPadded = padarray(imag, [floor(x/2) floor(y/2)]); 
 
