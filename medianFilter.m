@@ -1,0 +1,21 @@
+function [imagNew] = medianFilter(imag, x, y)
+    % Median Filter - imag is the image matrix, x is the horizontal size kernel and
+    % y is the vertical size of the kernel.
+    imagPadded = padarray(imag, [floor(x/2) floor(y/2)]); 
+
+    [n, m] = size(imag);  
+    imagNew = zeros(n, m, 'uint8'); %Initiazlize
+
+    x = -(floor(x/2)):floor(x/2); %Filter locations
+    y = -(floor(y/2)):floor(y/2);
+
+    for i = 1:n % x iter
+        for j = 1:m % y iter
+            startx = i + x(end);
+            starty = j + y(end);
+            neighborhood = imagPadded(startx + x, starty + y); % get values around pixel
+            vec = neighborhood(:); % turn into a 1d
+            imagNew(i, j) = median(vec);
+        end
+    end
+end
