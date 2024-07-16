@@ -25,8 +25,8 @@ function [imagNew] = medianFilter(imag, x, y)
         for j = 1:m % y iter
             startx = i + x(end);
             starty = j + y(end);
-            neighborhood = imagPadded(startx + x, starty + y); % get values around pixel
-            vec = neighborhood(:); % turn into a 1d
+            neighbor = imagPadded(startx + x, starty + y); % get values around pixel
+            vec = neighbor(:); % turn into a 1d
             imagNew(i, j) = median(vec);
         end
     end

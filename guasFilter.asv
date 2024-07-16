@@ -1,0 +1,25 @@
+function [newImag] = guasFilter(imag, x, y, sigmaX, sigmaY)
+% Apply a gausian kernel (filtering) smoothing on an image.
+% guasFilter(imag, x, y, sigmaX, sigmaY) - where imag is the target image,
+% x is the horizontal demension of the kernel, y is the vertical dimension
+% of the kernel, sigm
+    try
+        if mod(x, 2) == 0 || mod(y, 2) == 0
+            error('Kernel dimensions must be odd numbers.')
+        end
+
+    catch ME
+        rethrow(ME);
+    end
+
+    x = (1:x) - floor(x/2);
+    y = (1:y) - floor(y/2);
+    [X Y] = meshgrid(x,y);
+
+    G = (1 / (sqrt(2 * pi * sigmaX * sigmaY))) * exp(-(X.^2 / (2 * sigmaX^2) + Y.^2 / (2 * sigmaY^2)));
+    kernel = G./G(:);
+
+    newImag = conv2(imag, kernel, 'same');
+
+end
+

@@ -1,5 +1,6 @@
 function [h] = histo(imag)
-%Calculates the histogram counts of the image, returns the values.
+%Calculates the histogram counts of the image, returns the values, for
+%uint8 class images.
 %histo(imag) - where imag is the image 2d vector.
 
 [x y] = size(imag);
