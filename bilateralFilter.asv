@@ -1,0 +1,40 @@
+function [newImag] = bilateralFilter(imag, x, y, sigmaX, sigmaY, sigmaR)
+%BILATERALFILTER Summary of this function goes here
+%   Detailed explanation goes here
+    try
+        if mod(x, 2) == 0 || mod(y, 2) == 0
+            error('Kernel dimensions must be odd numbers.')
+        end
+
+    catch ME
+        rethrow(ME);
+    end
+
+    imag = double(imag);
+    x = -(floor(x/2)):floor(x/2); %Filter locations
+    y = -(floor(y/2)):floor(y/2);
+    [X Y] = meshgrid(x,y);
+    [n m] = size(imag);
+    newImag = zeros(n, m);
+
+    G = (1 / (sqrt(2 * pi * sigmaX * sigmaY))) * exp(-(X.^2 / (2 * sigmaX^2) + Y.^2 / (2 * sigmaY^2)));
+    kernel = G./sum(G(:));
+
+    for i = 1:n % x iter
+        for j = 1:m % y iter
+            startx = i + x(end);
+            starty = j + y(end);
+            neighbor = imagPadded(startx + x, starty + y); % get values around pixel
+            f = (1 / sqrt(2*pi*sigmaR)) * exp(-(neighbor - imag(startx + x, starty + y)).^2 / (2 * sigmaR^2));
+            g = G((startx + x) - i + y(end) + 1, (starty + y) - j + x(end + 1));
+            prod = g.*f;
+
+            newImag(i, j) = sum(F(:) .* neighbor(:))
+        end
+    end
+
+    newImag = conv2(imag, kernel, 'same');
+    newImag = uint8(newImag);
+
+end
+
