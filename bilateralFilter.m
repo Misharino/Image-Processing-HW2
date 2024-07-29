@@ -1,4 +1,9 @@
     function [newImag] = bilateralFilter(imag, x, y, sigmaX, sigmaY, sigmaR)
+%Apply a bilateral filter to the image.
+% bilatFilter(imag, x, y, sigmaX, sigmaY, sigmaR) - where imag is the target image,
+% x is the horizontal demension of the kernel, y is the vertical dimension
+% of the kernel, sigmaX is the var of the X axis, sigma Y is the var of
+% the Y axis and sigma R is the var of the range factor.
     
         imag = double(imag);
     
@@ -23,11 +28,8 @@
     
                 % Calculate the combined filter
                 combinedFilter = spatialGaussian .* rangeGaussian;
-    
-                % Normalize the filter
                 combinedFilter = combinedFilter / sum(combinedFilter(:));
     
-                % Apply the filter
                 newImag(i, j) = sum(sum(combinedFilter .* localRegion));
             end
         end
